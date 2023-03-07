@@ -3,8 +3,8 @@ import { Text, View, StyleSheet, FlatList } from "react-native";
 import moment from "moment";
 import { Button } from "react-native-paper";
 import { Context } from "../ContextApi/ContextProvider";
-import { getLocationDetails } from "../src/Location";
-import { postLocation } from "../src/Mylocation";
+import { getLocationData} from "../src/Location";
+import { post_Location } from "../src/Mylocation";
 const Home=()=>{
   const context: any = useContext(Context);
   const [errorMsg, setErrorMsg] = useState("");
@@ -18,13 +18,13 @@ const Home=()=>{
       return [...prevValue, moment().format("MM/DD/YYYY")];
     });
     if (context.location?.length > 0) {
-      let response = await getLocationDetails(
+      let response = await getLocationData(
         context.location.latitude,
         context.location.longitude
       );
       await context.setLocationData(response.data.results);
       await context.setCurrLocation(response.data.results);
-      postLocation(response.data.results, moment().format("HH:mm:ss"));
+      post_Location(response.data.results, moment().format("HH:mm:ss"));
     } else {
       const getLocation = require("expo-location");
 
@@ -38,12 +38,12 @@ const Home=()=>{
       latitude = await location.coords.latitude;
     }
     context.setCurrLocation([]);
-    getLocationDetails(longitude, latitude).then((response: any) => {
+    getLocationData(longitude, latitude).then((response: any) => {
       context.setLocationData((prevRes: any) => {
         return [...prevRes, ...response.data.results];
       });
       context.setCurrLocation(response.data.results);
-      postLocation(
+      post_Location(
         response.data.results[0].formatted,
         moment().format("HH:mm:ss")
       );

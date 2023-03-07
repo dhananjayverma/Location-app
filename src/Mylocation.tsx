@@ -1,9 +1,9 @@
 import axios from "axios";
 
-let postData = axios.create({
+let post_Data = axios.create({
   baseURL: "https://httpstat.us/200",
 });
 
-export const postLocation = (locationName: string, time: string) => {
-  return postData.post("/location", { location: { locationName, time } });
+export const post_Location = (locationName: string, time: string) => {
+  return post_Data.post("/location", { location: { locationName, time } });
 };
